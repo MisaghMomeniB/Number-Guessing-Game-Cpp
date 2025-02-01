@@ -98,3 +98,22 @@ void playGuessTheNumber(int maxNumber) {
         cout << "Sorry, you've run out of attempts. The correct number was " << secretNumber << "." << endl;
     }
 }
+
+bool askToPlayAgain() {
+    char choice;
+    cout << "Do you want to play again? (y/n): ";
+    cin >> choice;
+    return (choice == 'y' || choice == 'Y');
+}
+
+int main() {
+    srand(static_cast<unsigned int>(time(0)));
+
+    do {
+        int maxNumber = chooseDifficulty();
+        playGuessTheNumber(maxNumber);
+    } while (askToPlayAgain());
+
+    cout << "Thank you for playing! Goodbye!" << endl;
+    return 0;
+}
