@@ -1,13 +1,15 @@
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <ctime>
-
 using namespace std;
 
+// Function to generate a random number between min and max
 int generateRandomNumber(int min, int max) {
     return rand() % (max - min + 1) + min;
 }
 
+// Function to choose difficulty level
 int chooseDifficulty() {
     int difficulty;
     cout << "Choose the difficulty level:" << endl;
@@ -30,48 +32,31 @@ int chooseDifficulty() {
     }
 }
 
-void playGuessTheNumber(int maxNumber) {
-    int secretNumber = generateRandomNumber(1, maxNumber);
-    int guess = 0;
-    int attempts = 0;
-    bool guessedCorrectly = false;
-
-    cout << "I have selected a number between 1 and " << maxNumber << "." << endl;
-    cout << "Try to guess it!" << endl;
-
-    while (!guessedCorrectly) {
-        cout << "Enter your guess: ";
-        cin >> guess;
-        attempts++;
-
-        if (guess < 1 || guess > maxNumber) {
-            cout << "Please enter a number between 1 and " << maxNumber << "." << endl;
-        } else if (guess < secretNumber) {
-            cout << "Too low! Try again." << endl;
-        } else if (guess > secretNumber) {
-            cout << "Too high! Try again." << endl;
-        } else {
-            guessedCorrectly = true;
-            cout << "Congratulations! You guessed the correct number in " << attempts << " attempts." << endl;
-        }
+// Function to save results to a file
+void saveResultToFile(int attempts, int maxNumber) {
+    ofstream file("game_results.txt", ios::app);
+    if (file.is_open()) {
+        file << "Max Number: " << maxNumber << ", Attempts: " << attempts << "\n";
+        file.close();
+    } else {
+        cout << "Unable to save results to file." << endl;
     }
 }
 
-int main() {
-    srand(static_cast<unsigned int>(time(0)));
-
-    int maxNumber = chooseDifficulty();
-
-    playGuessTheNumber(maxNumber);
-
-    return 0;
+// Function to ask the user if they want to play again
+bool askToPlayAgain() {
+    char choice;
+    cout << "Do you want to play again? (y/n): ";
+    cin >> choice;
+    return (choice == 'y' || choice == 'Y');
 }
 
+// Main game logic
 void playGuessTheNumber(int maxNumber) {
     int secretNumber = generateRandomNumber(1, maxNumber);
     int guess = 0;
     int attempts = 0;
-    const int maxAttempts = 7; // تعداد تلاش‌های مجاز
+    const int maxAttempts = 7; // Maximum allowed attempts
     bool guessedCorrectly = false;
 
     cout << "I have selected a number between 1 and " << maxNumber << "." << endl;
@@ -91,6 +76,7 @@ void playGuessTheNumber(int maxNumber) {
         } else {
             guessedCorrectly = true;
             cout << "Congratulations! You guessed the correct number in " << attempts << " attempts." << endl;
+            saveResultToFile(attempts, maxNumber); // Save the result to file
         }
     }
 
@@ -99,61 +85,15 @@ void playGuessTheNumber(int maxNumber) {
     }
 }
 
-bool askToPlayAgain() {
-    char choice;
-    cout << "Do you want to play again? (y/n): ";
-    cin >> choice;
-    return (choice == 'y' || choice == 'Y');
-}
-
+// Main function
 int main() {
-    srand(static_cast<unsigned int>(time(0)));
+    srand(static_cast<unsigned int>(time(0))); // Seed the random number generator
 
     do {
-        int maxNumber = chooseDifficulty();
-        playGuessTheNumber(maxNumber);
-    } while (askToPlayAgain());
+        int maxNumber = chooseDifficulty(); // Choose difficulty level
+        playGuessTheNumber(maxNumber);     // Play the game
+    } while (askToPlayAgain());            // Ask if the user wants to play again
 
     cout << "Thank you for playing! Goodbye!" << endl;
     return 0;
-}
-
-#include <fstream>
-
-void saveResultToFile(int attempts, int maxNumber) {
-    ofstream file("game_results.txt", ios::app);
-    if (file.is_open()) {
-        file << "Max Number: " << maxNumber << ", Attempts: " << attempts << "\n";
-        file.close();
-    } else {
-        cout << "Unable to save results to file." << endl;
-    }
-}
-
-void playGuessTheNumber(int maxNumber) {
-    int secretNumber = generateRandomNumber(1, maxNumber);
-    int guess = 0;
-    int attempts = 0;
-    bool guessedCorrectly = false;
-
-    cout << "I have selected a number between 1 and " << maxNumber << "." << endl;
-    cout << "Try to guess it!" << endl;
-
-    while (!guessedCorrectly) {
-        cout << "Enter your guess: ";
-        cin >> guess;
-        attempts++;
-
-        if (guess < 1 || guess > maxNumber) {
-            cout << "Please enter a number between 1 and " << maxNumber << "." << endl;
-        } else if (guess < secretNumber) {
-            cout << "Too low! Try again." << endl;
-        } else if (guess > secretNumber) {
-            cout << "Too high! Try again." << endl;
-        } else {
-            guessedCorrectly = true;
-            cout << "Congratulations! You guessed the correct number in " << attempts << " attempts." << endl;
-            saveResultToFile(attempts, maxNumber); // ذخیره نتیجه
-        }
-    }
 }
