@@ -2,6 +2,10 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
+#include <limits>       // برای numeric_limits
+#include <algorithm>    // برای max()
+#include <utility>      // برای swap
+
 using namespace std;
 
 // Generate a random number between min and max (inclusive)
@@ -23,19 +27,22 @@ int chooseDifficulty() {
         cout << "0. Exit Game" << endl;
         cout << "Enter your choice (0/1/2/3): ";
         cin >> difficulty;
+
         if (cin.fail()) { // Handle invalid input
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear bad input
             cout << "Invalid input! Please enter a valid choice." << endl;
             continue;
         }
+
         if (difficulty == 0) {
-            cout << "Exiting the game. Goodbye!" << endl;
-            exit(0);
+            return 0; // Return 0 to exit the game
         }
+
         if (difficulty >= 1 && difficulty <= 3) {
             return (difficulty == 1) ? 50 : (difficulty == 2) ? 100 : 200;
         }
+
         cout << "Invalid choice! Please try again." << endl;
     }
 }
@@ -71,7 +78,7 @@ void playGuessTheNumber(int maxNumber) {
     int secretNumber = generateRandomNumber(1, maxNumber);
     int guess = 0;
     int attempts = 0;
-    const int maxAttempts = 7;
+    int maxAttempts = (maxNumber == 50) ? 7 : (maxNumber == 100) ? 10 : 15; // Adjust max attempts based on difficulty
     bool guessedCorrectly = false;
 
     cout << "I have selected a number between 1 and " << maxNumber << "." << endl;
@@ -80,16 +87,19 @@ void playGuessTheNumber(int maxNumber) {
     while (!guessedCorrectly && attempts < maxAttempts) {
         cout << "Enter your guess (or 0 to exit): ";
         cin >> guess;
+
         if (cin.fail()) { // Handle invalid input
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear bad input
             cout << "Invalid input! Please enter a valid number." << endl;
             continue;
         }
+
         if (guess == 0) {
             cout << "Exiting the game. Goodbye!" << endl;
-            exit(0);
+            return; // Exit the function
         }
+
         attempts++;
         if (guess < 1 || guess > maxNumber) {
             cout << "Please enter a number between 1 and " << maxNumber << "." << endl;
@@ -114,10 +124,16 @@ int main() {
     srand(static_cast<unsigned int>(time(0))); // Seed the random number generator
     cout << "Welcome to the Guess the Number Game!" << endl;
 
-    do {
+    bool continueGame = true;
+    while (continueGame) {
         int maxNumber = chooseDifficulty();
+        if (maxNumber == 0) { // If user chooses to exit
+            cout << "Exiting the game. Goodbye!" << endl;
+            break;
+        }
         playGuessTheNumber(maxNumber);
-    } while (askToPlayAgain());
+        continueGame = askToPlayAgain();
+    }
 
     cout << "Thank you for playing! Goodbye!" << endl;
     return 0;
