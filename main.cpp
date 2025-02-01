@@ -56,3 +56,13 @@ void playGuessTheNumber(int maxNumber) {
         }
     }
 }
+
+int main() {
+    srand(static_cast<unsigned int>(time(0)));
+
+    int maxNumber = chooseDifficulty();
+
+    playGuessTheNumber(maxNumber);
+
+    return 0;
+}
