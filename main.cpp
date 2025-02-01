@@ -4,20 +4,24 @@
 #include <ctime>
 using namespace std;
 
-// Function to generate a random number between min and max
 int generateRandomNumber(int min, int max) {
     return rand() % (max - min + 1) + min;
 }
 
-// Function to choose difficulty level
 int chooseDifficulty() {
     int difficulty;
     cout << "Choose the difficulty level:" << endl;
     cout << "1. Easy (1-50)" << endl;
     cout << "2. Medium (1-100)" << endl;
     cout << "3. Hard (1-200)" << endl;
-    cout << "Enter your choice (1/2/3): ";
+    cout << "0. Exit Game" << endl;
+    cout << "Enter your choice (0/1/2/3): ";
     cin >> difficulty;
+
+    if (difficulty == 0) {
+        cout << "Exiting the game. Goodbye!" << endl;
+        exit(0);
+    }
 
     switch (difficulty) {
         case 1:
@@ -32,7 +36,7 @@ int chooseDifficulty() {
     }
 }
 
-// Function to save results to a file
+//
 void saveResultToFile(int attempts, int maxNumber) {
     ofstream file("game_results.txt", ios::app);
     if (file.is_open()) {
@@ -43,7 +47,7 @@ void saveResultToFile(int attempts, int maxNumber) {
     }
 }
 
-// Function to ask the user if they want to play again
+//
 bool askToPlayAgain() {
     char choice;
     cout << "Do you want to play again? (y/n): ";
@@ -51,20 +55,25 @@ bool askToPlayAgain() {
     return (choice == 'y' || choice == 'Y');
 }
 
-// Main game logic
 void playGuessTheNumber(int maxNumber) {
     int secretNumber = generateRandomNumber(1, maxNumber);
     int guess = 0;
     int attempts = 0;
-    const int maxAttempts = 7; // Maximum allowed attempts
+    const int maxAttempts = 7;
     bool guessedCorrectly = false;
 
     cout << "I have selected a number between 1 and " << maxNumber << "." << endl;
     cout << "You have " << maxAttempts << " attempts to guess it!" << endl;
 
     while (!guessedCorrectly && attempts < maxAttempts) {
-        cout << "Enter your guess: ";
+        cout << "Enter your guess (or 0 to exit): ";
         cin >> guess;
+
+        if (guess == 0) {
+            cout << "Exiting the game. Goodbye!" << endl;
+            exit(0);
+        }
+
         attempts++;
 
         if (guess < 1 || guess > maxNumber) {
@@ -76,7 +85,7 @@ void playGuessTheNumber(int maxNumber) {
         } else {
             guessedCorrectly = true;
             cout << "Congratulations! You guessed the correct number in " << attempts << " attempts." << endl;
-            saveResultToFile(attempts, maxNumber); // Save the result to file
+            saveResultToFile(attempts, maxNumber);
         }
     }
 
@@ -85,14 +94,14 @@ void playGuessTheNumber(int maxNumber) {
     }
 }
 
-// Main function
+
 int main() {
-    srand(static_cast<unsigned int>(time(0))); // Seed the random number generator
+    srand(static_cast<unsigned int>(time(0)));
 
     do {
-        int maxNumber = chooseDifficulty(); // Choose difficulty level
-        playGuessTheNumber(maxNumber);     // Play the game
-    } while (askToPlayAgain());            // Ask if the user wants to play again
+        int maxNumber = chooseDifficulty();
+        playGuessTheNumber(maxNumber);
+    } while (askToPlayAgain());
 
     cout << "Thank you for playing! Goodbye!" << endl;
     return 0;
