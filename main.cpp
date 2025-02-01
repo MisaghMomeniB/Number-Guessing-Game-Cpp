@@ -29,3 +29,30 @@ int chooseDifficulty() {
             return 100;
     }
 }
+
+void playGuessTheNumber(int maxNumber) {
+    int secretNumber = generateRandomNumber(1, maxNumber);
+    int guess = 0;
+    int attempts = 0;
+    bool guessedCorrectly = false;
+
+    cout << "I have selected a number between 1 and " << maxNumber << "." << endl;
+    cout << "Try to guess it!" << endl;
+
+    while (!guessedCorrectly) {
+        cout << "Enter your guess: ";
+        cin >> guess;
+        attempts++;
+
+        if (guess < 1 || guess > maxNumber) {
+            cout << "Please enter a number between 1 and " << maxNumber << "." << endl;
+        } else if (guess < secretNumber) {
+            cout << "Too low! Try again." << endl;
+        } else if (guess > secretNumber) {
+            cout << "Too high! Try again." << endl;
+        } else {
+            guessedCorrectly = true;
+            cout << "Congratulations! You guessed the correct number in " << attempts << " attempts." << endl;
+        }
+    }
+}
