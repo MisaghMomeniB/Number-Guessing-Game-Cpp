@@ -1,68 +1,133 @@
-# 🎮 Guess the Number Game 🎮
+# 🎯 Number Guessing Game (C++)
 
-This project is an exciting number guessing game where you get to choose the difficulty level and try to guess a randomly generated number! 🧩
-
----
-
-## 🔍 Project Description:
-
-This program helps you guess a randomly selected number by the computer. You can choose from three different difficulty levels and try to find the correct number through multiple attempts! 🎯
-
-Each time the game ends, the results are saved to a `game_results.txt` file. 📈
+A fun and interactive **console-based number guessing game** implemented in modern C++. Ideal for beginners to learn random number generation, loops, conditionals, input validation, and basic game logic.
 
 ---
 
-## 🧑‍💻 How It Works:
+## 📋 Table of Contents
 
-1. **Choose Difficulty Level:**  
-   You can choose from three difficulty levels:
-   - 🌟 **Easy (1-50)**
-   - ⚡ **Medium (1-100)**
-   - 🔥 **Hard (1-200)**
-
-2. **Guess the Number:**  
-   After selecting the difficulty, you try to guess the number the computer has chosen. You have **7 attempts** to get it right. 🔢
-
-3. **Hint Messages:**  
-   After each guess, the game gives you a hint: whether your guess was too low or too high. If you guess correctly, you’ll get congratulated! 🎉
-
-4. **Saving Results:**  
-   After the game ends, your number of attempts and the maximum number for each game are saved to a text file. 📄
+1. [Overview](#overview)  
+2. [Features](#features)  
+3. [Tech Stack & Requirements](#tech-stack--requirements)  
+4. [Installation & Build](#installation--build)  
+5. [Usage Examples](#usage-examples)  
+6. [Code Structure](#code-structure)  
+7. [Extendability Ideas](#extendability-ideas)  
+8. [Contributing](#contributing)  
+9. [License](#license)
 
 ---
 
-## 📋 Code Breakdown:
+## 💡 Overview
 
-### 1. **`generateRandomNumber(int min, int max)` function:**  
-   This function generates a random number between the input `min` and `max` values. 📐
-
-### 2. **`chooseDifficulty()` function:**  
-   The user is prompted to select a difficulty level. If an invalid input is entered, they are asked to choose again. 💭
-
-### 3. **`saveResultToFile(int attempts, int maxNumber)` function:**  
-   After each game, the number of attempts and the maximum number are saved to a `game_results.txt` file. 📝
-
-### 4. **`askToPlayAgain()` function:**  
-   This function asks the user if they want to play again. If they choose yes, the game restarts. 🔄
-
-### 5. **`playGuessTheNumber(int maxNumber)` function:**  
-   This is where the main game happens. A random number is generated, and the player must guess it. 🕹️
+This CLI game randomly selects a number (e.g., between 1–100) and challenges the player to guess it within a limited number of attempts. Feedback is provided after each guess ("too high"/"too low") to guide the player. A classic exercise to practice foundational C++ concepts. :contentReference[oaicite:1]{index=1}
 
 ---
 
-## ⚙️ How to Use:
+## ✅ Features
 
-1. Download the code and run it in your C++ environment. 💻
-2. Choose your difficulty level.
-3. Guess the correct number! 😎
-4. Save your results and either play again or exit the game! 🚀
+- 🎲 Random number generation using `rand()` seeded with current time  
+- ⏱‍♂️ Difficulty levels offering different attempt limits (e.g., Easy/Medium/Hard)  
+- 🔁 Feedback loop: informs player if guess is too high or too low  
+- 🧮 Input validation to handle non-numeric user entries  
+- 👏 Win/lose messages, with option to replay  
+- 🏅 Tracks and displays total wins and losses in a session
+
+---
+
+## 🛠️ Tech Stack & Requirements
+
+- **C++11+** compatible compiler (`g++`, `clang++`, or MSVC)  
+- Standard Headers:
+  - `<iostream>` for I/O  
+  - `<cstdlib>` and `<ctime>` for randomization  
+  - `<limits>` for input validation
 
 ---
 
-## 🎉 Summary:
+## ⚙️ Installation & Build
 
-This game gives you the opportunity to challenge yourself with different difficulty levels of number guessing! Can you find the correct number with the least number of attempts? 👀
+Clone the repository and compile:
 
-Feel free to reach out through **Issues** for any questions or suggestions! 💬
+```bash
+git clone https://github.com/MisaghMomeniB/Number-Guessing-Game-Cpp.git
+cd Number-Guessing-Game-Cpp
+g++ -std=c++11 -o guess_game main.cpp
+````
+
+Or, if using CMake:
+
+```bash
+mkdir build && cd build
+cmake ..
+make
+```
 
 ---
+
+## 🚀 Usage Examples
+
+Run the game with:
+
+```bash
+./guess_game
+```
+
+Typical session flow:
+
+```
+Welcome to the Number Guessing Game!
+Choose difficulty (1=Easy, 2=Medium, 3=Hard): 2
+I'm thinking of a number between 1 and 100. You have 7 guesses.
+
+Enter your guess: 50
+Too high! 6 guesses left.
+...
+Congratulations! You guessed the number in 5 attempts.
+Play again? (y/n): y
+```
+
+Tracks and displays the session's win/loss record upon exit.
+
+---
+
+## 📁 Code Structure
+
+```
+Number-Guessing-Game-Cpp/
+└── main.cpp        # Game logic, RNG, input loop, and scoring
+```
+
+Key components:
+
+* RNG seeded with `time(0)`
+* Difficulty-level selection setting guess limits
+* Input validation using `cin.clear()` and `cin.ignore()`
+* Loop controlling guesses with feedback and replay option
+
+---
+
+## 💡 Extendability Ideas
+
+* 🔧 Add customizable range or difficulty command-line flags
+* ⏳ Integrate timer to track completion time
+* 🗃 Maintain user-specific high scores (file I/O)
+* 🎨 Add ASCII art or colorful output to enhance UX
+* 🧪 Add unit tests with frameworks like Catch2
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! To add features or enhancements:
+
+1. Fork the repository
+2. Create a feature branch (e.g., `feature/highscores`)
+3. Document and comment your code
+4. Submit a Pull Request for review
+
+---
+
+## 📄 License
+
+Released under the **MIT License** — see `LICENSE` for full details.
